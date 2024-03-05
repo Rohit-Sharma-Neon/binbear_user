@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15.252" height="19.14" viewBox="0 0 15.252 19.14">
+  <g id="padlock_747305" transform="translate(-52)">
+    <g id="Group_8" data-name="Group 8" transform="translate(52)">
+      <g id="Group_7" data-name="Group 7" transform="translate(0)">
+        <path id="Path_60685" data-name="Path 60685" d="M65.009,7.028H63.662V3.954a4.038,4.038,0,0,0-8.075,0V7.028H54.243A2.245,2.245,0,0,0,52,9.271V16.9a2.245,2.245,0,0,0,2.243,2.243H65.009A2.245,2.245,0,0,0,67.252,16.9V9.271A2.245,2.245,0,0,0,65.009,7.028ZM57.083,3.954a2.543,2.543,0,0,1,5.084,0V7.028H57.083ZM65.757,16.9a.748.748,0,0,1-.748.748H54.243A.748.748,0,0,1,53.5,16.9V9.271a.748.748,0,0,1,.748-.748H65.009a.748.748,0,0,1,.748.748Z" transform="translate(-52)" fill="#330601"/>
+      </g>
+    </g>
+    <g id="Group_10" data-name="Group 10" transform="translate(58.243 10.691)">
+      <g id="Group_9" data-name="Group 9">
+        <path id="Path_60686" data-name="Path 60686" d="M220.383,286a1.383,1.383,0,0,0-.749,2.546v1.641a.748.748,0,0,0,1.5,0v-1.639a1.383,1.383,0,0,0-.746-2.547Z" transform="translate(-219 -286)" fill="#330601"/>
+      </g>
+    </g>
+  </g>
+</svg>

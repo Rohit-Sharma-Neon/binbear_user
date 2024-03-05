@@ -1,0 +1,37 @@
+class BaseAssets {
+  static const String appLogoWithName = "assets/images/app_logo_with_name.svg";
+  static const String bgScaffold = "assets/images/bg_scaffold.png";
+  static const String splashFooter = "assets/images/splash_footer.svg";
+  static const String binBearTextLogo = "assets/images/bin_bear_text_logo.png";
+  static const String icEmail = "assets/images/ic_email.svg";
+  static const String icLock = "assets/images/ic_lock.svg";
+  static const String icEyeCrossed = "assets/images/ic_eye_crossed.svg";
+  static const String icPerson = "assets/images/ic_person.svg";
+  static const String icPhone = "assets/images/ic_phone.svg";
+  static const String icSignUpSuccess = "assets/images/ic_success.png";
+  static const String icLocation = "assets/images/ic_location.png";
+  static const String icClose = "assets/images/ic_close.svg";
+  static const String icPin = "assets/images/ic_pin.svg";
+  static const String icLocate = "assets/images/ic_locate.svg";
+  static const String icSearch = "assets/images/ic_search.svg";
+  static const String icCalendar = "assets/images/ic_calendar.svg";
+  static const String icClock = "assets/images/ic_clock.svg";
+  static const String icNotification = "assets/images/ic_notification.svg";
+  static const String icDrawer = "assets/images/ic_drawer.svg";
+  static const String navBookingsUnselected = "assets/images/nav_bookings_unselected.svg";
+  static const String navChatUnselected = "assets/images/nav_chat_unselected.svg";
+  static const String navUserUnselected = "assets/images/nav_user_unselected.svg";
+  static const String navHomeSelected = "assets/images/nav_home_selected.svg";
+  static const String icArrowRight = "assets/images/ic_arrow_right.svg";
+  static const String icInvoice = "assets/images/ic_invoice.svg";
+  static const String icFillRating = "assets/images/ic_fill_rating.svg";
+  static const String icUnFillRating = "assets/images/ic_unfill_rating.svg";
+  static const String icCross = "assets/images/ic_cross.svg";
+  static const String icCheck = "assets/images/ic_check.svg";
+  static const String icServiceCalendar = "assets/images/ic_service_calendar.svg";
+  static const String icMediumTruck = "assets/images/ic_medium_truck.svg";
+  static const String icLargeTruck = "assets/images/ic_large_truck.svg";
+  static const String icXLTruck = "assets/images/ic_xl_truck.svg";
+  static const String icCreditCards = "assets/images/ic_credit_cards.png";
+  static const String icUpload = "assets/images/ic_upload.svg";
+}

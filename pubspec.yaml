@@ -1,0 +1,73 @@
+name: binbear
+description: "Trash pickup & collecting app"
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  get: ^4.6.6
+  dio: ^5.4.1
+  flutter_svg: ^2.0.10+1
+  image_picker: ^1.0.7
+  scaled_app: ^2.2.0
+  pinput: ^4.0.0
+  geolocator: ^11.0.0
+  google_maps_flutter: ^2.6.0
+  fluttertoast: ^8.2.4
+  flutter_rating_bar: ^4.0.1
+# Animations Packages
+  animate_do: ^3.3.3
+  flutter_staggered_animations: ^1.1.1
+  shimmer: ^3.0.0
+  animations: ^2.0.11
+  slide_countdown: ^1.5.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.1
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/launcher_icon_final.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/delete/
+
+  fonts:
+    - family: NunitoSans
+      fonts:
+        - asset: assets/fonts/NunitoSans-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/NunitoSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/NunitoSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/NunitoSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/NunitoSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NunitoSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/NunitoSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/NunitoSans-Black.ttf
+          weight: 900
