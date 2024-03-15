@@ -1,6 +1,7 @@
 import 'package:binbear/ui/base_components/animated_column.dart';
 import 'package:binbear/ui/base_components/base_button.dart';
 import 'package:binbear/ui/base_components/base_container.dart';
+import 'package:binbear/ui/base_components/base_form_field_validator_icon.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
 import 'package:binbear/ui/base_components/base_text_button.dart';
@@ -14,6 +15,7 @@ import 'package:binbear/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -55,38 +57,83 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 1.5
                     ),
                     Image.asset(BaseAssets.binBearTextLogo, width: 70,),
-                    BaseTextField(
-                      topMargin: 12,
-                      controller: TextEditingController(),
-                      hintText: 'Email Address',
-                      labelText: 'Email Address',
-                      textInputType: TextInputType.emailAddress,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(right: 13),
-                        child: SvgPicture.asset(BaseAssets.icEmail),
-                      ),
+                    GetBuilder<LoginController>(
+                      builder: (LoginController controller) {
+                        return BaseTextField(
+                          topMargin: 12,
+                          controller: controller.emailController,
+                          hintText: 'Email Address',
+                          labelText: 'Email Address',
+                          textInputType: TextInputType.emailAddress,
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(right: 13),
+                            child: SvgPicture.asset(BaseAssets.icEmail),
+                          ),
+                          suffixIcon: BaseFormFieldValidatorIcon(
+                            textEditingController: controller.emailController,
+                            failedOn: !GetUtils.isEmail(controller.emailController.text),
+                          ),
+                          onChanged: (val){
+                            controller.update();
+                          },
+                        );
+                      },
                     ),
-                    BaseTextField(
-                      topMargin: 14,
-                      controller: TextEditingController(),
-                      labelText: 'Password',
-                      hintText: 'Enter Password',
-                      textInputType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.done,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(right: 13),
-                        child: SvgPicture.asset(BaseAssets.icLock),
-                      ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 3),
-                        child: SvgPicture.asset(BaseAssets.icEyeCrossed),
-                      ),
+                    GetBuilder<LoginController>(
+                      builder: (LoginController controller) {
+                        return BaseTextField(
+                          topMargin: 14,
+                          controller: controller.passwordController,
+                          labelText: 'Password',
+                          hintText: 'Enter Password',
+                          textInputType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done,
+                          onChanged: (val){
+                            controller.update();
+                          },
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(right: 13),
+                            child: SvgPicture.asset(BaseAssets.icLock),
+                          ),
+                          suffixIcon: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              GestureDetector(
+                                onTap: (){
+                                  triggerHapticFeedback();
+                                  controller.obscurePassword = !(controller.obscurePassword);
+                                  controller.update();
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 3),
+                                  child: controller.obscurePassword ? const Icon(Icons.visibility_off, size: 24) : const Icon(Icons.visibility, size: 24),
+                                ),
+                              ),
+                              BaseFormFieldValidatorIcon(
+                                leftMargin: 6,
+                                textEditingController: controller.passwordController,
+                                failedOn: controller.passwordController.text.length < 8,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                     BaseButton(
                       topMargin: 24,
                       title: "Login",
                       onPressed: (){
-                        Get.offAll(() => const DashBoardScreen());
+                        if(controller.emailController.text.isEmpty){
+                          showSnackBar(subtitle: "Please Enter Email");
+                        }else if (!GetUtils.isEmail(controller.emailController.text)) {
+                          showSnackBar(subtitle: "Please Enter Valid Email");
+                        }else if (controller.passwordController.text.isEmpty) {
+                          showSnackBar(subtitle: "Please Enter Password");
+                        }else if (controller.passwordController.text.length < 8) {
+                          showSnackBar(subtitle: "Password Length Can't Be Less Than 8");
+                        }else{
+                          controller.getResponse();
+                        }
                       },
                     ),
                     BaseTextButton(

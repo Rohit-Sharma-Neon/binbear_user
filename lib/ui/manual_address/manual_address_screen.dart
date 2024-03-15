@@ -6,10 +6,11 @@ import 'package:binbear/ui/base_components/base_text_button.dart';
 import 'package:binbear/ui/manual_address/components/address_search_field.dart';
 import 'package:binbear/ui/manual_address/components/manual_address_list_tile.dart';
 import 'package:binbear/ui/manual_address/controller/manual_address_controller.dart';
+import 'package:binbear/ui/map_view/controller/map_view_controller.dart';
 import 'package:binbear/ui/map_view/map_view_screen.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_colors.dart';
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,7 @@ class ManualAddressScreen extends StatefulWidget {
 class _ManualAddressScreenState extends State<ManualAddressScreen> {
 
   ManualAddressController controller = Get.put(ManualAddressController());
+  MapViewController mapViewController = Get.put(MapViewController());
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                   ],
                 ),
                 onPressed: (){
-                  Get.to(()=> const MapViewScreen());
+                  controller.locateToCurrentLocation();
                 },
               ),
               Expanded(

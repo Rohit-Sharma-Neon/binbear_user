@@ -6,7 +6,7 @@ import 'package:binbear/ui/base_components/base_app_bar.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/load_size_confirm_screen.dart';
 import 'package:binbear/utils/base_functions.dart';
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

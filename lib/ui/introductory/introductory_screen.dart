@@ -1,8 +1,13 @@
-import 'package:binbear/ui/base_components/animated_column.dart';
 import 'package:binbear/ui/base_components/base_app_bar.dart';
+import 'package:binbear/ui/base_components/base_loader.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
+import 'package:binbear/ui/base_components/listview_builder_animation.dart';
+import 'package:binbear/ui/introductory/component/introductory_shimmer.dart';
+import 'package:binbear/ui/introductory/controller/introductory_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 
 class IntroductoryScreen extends StatefulWidget {
   const IntroductoryScreen({super.key});
@@ -12,32 +17,55 @@ class IntroductoryScreen extends StatefulWidget {
 }
 
 class _IntroductoryScreenState extends State<IntroductoryScreen> {
-  bool isNotificationEnable = false;
+
+  IntroductoryController controller = Get.put(IntroductoryController());
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffoldBackground(
+    return BaseScaffoldBackground(
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: BaseAppBar(),
-        body: AnimatedColumn(
+        appBar: const BaseAppBar(),
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            BaseText(
+            const BaseText(
               topMargin: 75,
               value: "Introductory Videos",
-              fontSize: 30,
+              fontSize: 27,
               color: Colors.white,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
             ),
-            BaseText(
-              topMargin: 10,
+            const BaseText(
+              topMargin: 2,
               value: "Welcome to Binbear",
               fontSize: 14,
               color: Color(0xffFBE6D3),
               fontWeight: FontWeight.w500,
             ),
-            Row(children: [])
+            Expanded(
+              child: AnimationLimiter(
+                child: Obx(()=> (controller.isLoading.value) ? const IntroductoryShimmer() :
+                (controller.list?.length??0) == 0 ? const BaseNoData() : ListView.builder(
+                  itemCount: controller.list?.length??0,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(top: 10, right: 36, left: 36),
+                  itemBuilder: (context, index){
+                    return ListviewBuilderAnimation(
+                      index: index,
+                      child: Container(
+                        width: double.infinity,
+                        height: 100,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)
+                        )
+                        ),
+                      );
+                      },
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

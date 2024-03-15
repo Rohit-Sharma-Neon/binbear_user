@@ -7,7 +7,7 @@ import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/week_or_month_confirm_screen.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_functions.dart';
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

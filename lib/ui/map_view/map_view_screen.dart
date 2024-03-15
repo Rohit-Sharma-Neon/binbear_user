@@ -9,7 +9,7 @@ import 'package:binbear/ui/manual_address/components/address_search_field.dart';
 import 'package:binbear/ui/map_view/controller/map_view_controller.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_colors.dart';
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -17,7 +17,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:scaled_app/scaled_app.dart';
 
 class MapViewScreen extends StatefulWidget {
-  const MapViewScreen({super.key});
+  final double? lat, long;
+  const MapViewScreen({super.key, this.lat, this.long});
 
   @override
   State<MapViewScreen> createState() => _MapViewScreenState();
@@ -25,7 +26,12 @@ class MapViewScreen extends StatefulWidget {
 
 class _MapViewScreenState extends State<MapViewScreen> {
 
-  final MapViewController controller = Get.put(MapViewController());
+  final MapViewController controller = Get.find<MapViewController>();
+  @override
+  void initState() {
+    super.initState();
+    controller.addMarker(latitude: widget.lat??0, longitude: widget.long??0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +49,18 @@ class _MapViewScreenState extends State<MapViewScreen> {
         ),
         body: Stack(
           children: [
-            GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: controller.kGooglePlex,
-              onMapCreated: (GoogleMapController googleMapController) {
-                controller.mapController.complete(googleMapController);
+            GetBuilder<MapViewController>(
+              builder: (MapViewController controller) {
+                print("Widget Rebuild");
+                return GoogleMap(
+                  mapType: MapType.normal,
+                  myLocationEnabled: true,
+                  initialCameraPosition: controller.getInitialCameraPosition(lat: widget.lat??0, long: widget.long??0),
+                  onMapCreated: (GoogleMapController googleMapController) {
+                    controller.mapController.complete(googleMapController);
+                  },
+                  markers: Set<Marker>.of(controller.markers),
+                );
               },
             ),
             Container(

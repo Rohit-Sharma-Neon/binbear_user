@@ -4,7 +4,7 @@ import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/base_components/bookings_tile.dart';
 import 'package:binbear/ui/bookings_tab/components/bookings_tabbar.dart';
 import 'package:binbear/ui/bookings_tab/controller/bookings_controller.dart';
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';

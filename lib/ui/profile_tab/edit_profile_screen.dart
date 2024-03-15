@@ -11,7 +11,7 @@ import 'package:binbear/ui/profile_tab/controller/profile_controller.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_colors.dart';
 import 'package:binbear/utils/base_functions.dart';
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';

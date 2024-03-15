@@ -1,4 +1,4 @@
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 
 class BaseContainer extends StatelessWidget {

@@ -8,7 +8,7 @@ import 'package:binbear/ui/base_components/base_text.dart';
 import 'package:binbear/ui/base_components/base_textfield.dart';
 import 'package:binbear/ui/onboardings/base_success_screen.dart';
 import 'package:binbear/utils/base_assets.dart';
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -116,6 +116,13 @@ class _BasePaymentScreenState extends State<BasePaymentScreen> {
                           ),
                         ),
                       ],
+                    ),
+                    BaseTextField(
+                      topMargin: 15,
+                      controller: TextEditingController(),
+                      labelText: "Coupon Code (Optional)",
+                      hintText: "Enter Coupon Code",
+                      textInputType: TextInputType.number,
                     ),
                   ],
                 ),

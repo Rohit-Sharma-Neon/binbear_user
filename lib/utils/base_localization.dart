@@ -143,6 +143,10 @@ class BaseLocalization extends Translations {
       "Upload a picture":'Upload a picture',
       "You don't have to take your trash cans to the street. We'll collect them, clean them, and return them to your home.":"You don't have to take your trash cans to the street. We'll collect them, clean them, and return them to your home.",
       "/Month":'/Month',
+      "Help & Support":'Help & Support',
+      "No Internet Connection":'No Internet Connection',
+      "Something went wrong, please try again":'Something went wrong, please try again',
+      "About Us":'About Us',
     },
 
     'de_DE': {

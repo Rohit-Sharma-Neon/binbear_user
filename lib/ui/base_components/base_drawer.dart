@@ -1,9 +1,13 @@
+import 'package:binbear/ui/about_app/about_app_screen.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
 import 'package:binbear/ui/base_components/base_text_button.dart';
 import 'package:binbear/ui/dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
+import 'package:binbear/ui/help_&_support/help_&_support_screen.dart';
 import 'package:binbear/ui/introductory/introductory_screen.dart';
+import 'package:binbear/ui/onboardings/welcome_screen.dart';
 import 'package:binbear/utils/base_assets.dart';
-import 'package:binbear/utils/base_functions.dart';
+import 'package:binbear/utils/get_storage.dart';
+import 'package:binbear/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -53,21 +57,37 @@ class BaseDrawer extends StatelessWidget {
             },
           ),
           drawerListTiles(
+            title: 'Help & Support',
+            onTap: () {
+              Get.to(() => const HelpSupportScreen());
+            },
+          ),
+          drawerListTiles(
             title: 'Privacy Policy',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const AboutAppScreen(type: "Privacy Policy"));
+            },
           ),
           drawerListTiles(
             title: 'Terms & Conditions',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const AboutAppScreen(type: "Terms & Conditions"));
+            },
           ),
           drawerListTiles(
-            title: 'Help & Support',
-            onTap: () {},
+            title: 'About Us',
+            onTap: () {
+              Get.to(() => const AboutAppScreen(type: "About Us"));
+            },
           ),
+
           const Spacer(),
           drawerListTiles(
             title: 'Log Out',
-            onTap: () {},
+            onTap: () {
+              BaseStorage.remove(StorageKeys.apiToken);
+              Get.offAll(() => const WelcomeScreen());
+            },
           ),
         ],
       ),

@@ -17,6 +17,9 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 // Git Commands
+# git remote add origin https://github.com/Rohit-Sharma-Neon/binbear_user.git
 # git add .
 # git commit -m ""
-# git push -u origin branch_name
+# git push -u origin sub-main-branch
+
+

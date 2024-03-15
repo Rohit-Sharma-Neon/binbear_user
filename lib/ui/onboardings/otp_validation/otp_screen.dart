@@ -53,6 +53,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                     const SizedBox(height: 30),
                     Pinput(
+                      controller: controller.otpController,
                       focusedPinTheme: PinTheme(
                         width: 56,
                         height: 56,
@@ -91,13 +92,13 @@ class _OtpScreenState extends State<OtpScreen> {
                       topMargin: 30,
                       title: "Verify",
                       onPressed: (){
-                        Get.off(() => const BaseSuccessScreen());
+                        controller.callVerifyOtpApi();
                       },
                       bottomMargin: 25,
                     ),
                     SlideCountdownSeparated(
                       key: UniqueKey(),
-                      duration: const Duration(seconds: 10),
+                      duration: const Duration(seconds: 59),
                       showZeroValue: true,
                       shouldShowHours: (v)=> false,
                       shouldShowDays: (v)=> false,

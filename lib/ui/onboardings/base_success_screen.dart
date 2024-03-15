@@ -18,7 +18,7 @@ class BaseSuccessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
       child: Scaffold(
-        appBar: const BaseAppBar(),
+        appBar: const BaseAppBar(showBackButton: false,),
         body: SingleChildScrollView(
           child: AnimatedColumn(
             children: [
@@ -50,7 +50,7 @@ class BaseSuccessScreen extends StatelessWidget {
                       topMargin: 35,
                       title: btnTitle??"Homepage",
                       onPressed: onBtnTap ?? (){
-                        Get.off(() => OnboardingLocationScreen());
+                        Get.to(() => OnboardingLocationScreen());
                       },
                     ),
                   ],

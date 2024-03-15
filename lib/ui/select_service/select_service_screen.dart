@@ -9,7 +9,7 @@ import 'package:binbear/ui/month_trash_cleaning_confirm_screen.dart';
 import 'package:binbear/ui/select_service/controller/select_service_controller.dart';
 import 'package:binbear/ui/week_or_month_selection_screen.dart';
 import 'package:binbear/utils/base_functions.dart';
-import 'package:binbear/utils/base_sizes.dart';
+import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

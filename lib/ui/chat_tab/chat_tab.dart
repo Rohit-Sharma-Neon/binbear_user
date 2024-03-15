@@ -16,7 +16,6 @@ class ChatTab extends StatefulWidget {
 }
 
 class _ChatTabState extends State<ChatTab> {
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldChatBackground(
@@ -48,7 +47,7 @@ class _ChatTabState extends State<ChatTab> {
                   },
                   child: const Padding(
                     padding: EdgeInsets.only(right: 10, left: 15),
-                    child: Icon(Icons.attach_file_outlined, size: 20,),
+                    child: Icon(Icons.attach_file_outlined, size: 20),
                   ),
                 ),
                 suffixIcon: GestureDetector(

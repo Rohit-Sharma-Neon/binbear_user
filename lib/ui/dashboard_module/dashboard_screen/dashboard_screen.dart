@@ -19,9 +19,7 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-
   DashboardController controller = Get.find<DashboardController>();
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
