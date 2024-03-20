@@ -24,16 +24,22 @@ class OtpResponse {
 
 class Data {
   dynamic token;
+  dynamic name;
+  dynamic profile;
 
-  Data({this.token});
+  Data({this.token, this.name, this.profile});
 
   Data.fromJson(Map<String, dynamic> json) {
     token = json['token'];
+    name = json['name'];
+    profile = json['profile'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['token'] = token;
+    data['name'] = name;
+    data['profile'] = profile;
     return data;
   }
 }

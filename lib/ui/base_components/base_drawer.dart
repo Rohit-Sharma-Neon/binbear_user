@@ -1,6 +1,8 @@
 import 'package:binbear/ui/about_app/about_app_screen.dart';
+import 'package:binbear/ui/base_components/base_dummy_profile.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
 import 'package:binbear/ui/base_components/base_text_button.dart';
+import 'package:binbear/ui/contact_us/contact_us_screen.dart';
 import 'package:binbear/ui/dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
 import 'package:binbear/ui/help_&_support/help_&_support_screen.dart';
 import 'package:binbear/ui/introductory/introductory_screen.dart';
@@ -30,13 +32,13 @@ class BaseDrawer extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ClipRRect(
+          BaseStorage.read(StorageKeys.profilePhoto).toString().isNotEmpty ? ClipRRect(
             borderRadius: BorderRadius.circular(90),
-            child: Image.asset("assets/delete/dummy_profile.jpeg", width: 100, height: 100, fit: BoxFit.fill),
-          ),
-          const BaseText(
+            child: Image.network(BaseStorage.read(StorageKeys.profilePhoto), width: 100, height: 100, fit: BoxFit.fill),
+          ) : const BaseDummyProfile(overflowHeight: 150, overflowWidth: 205, topMargin: 10),
+          BaseText(
             topMargin: 15,
-            value: "Rohit Sharma",
+            value: BaseStorage.read(StorageKeys.userName),
             fontSize: 20,
             color: Colors.black,
             fontWeight: FontWeight.w500,
@@ -48,7 +50,9 @@ class BaseDrawer extends StatelessWidget {
           ),
           drawerListTiles(
             title: 'Contact Us',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const ContactUsScreen());
+            },
           ),
           drawerListTiles(
             title: 'Introductory Videos',

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class IntroductoryController extends GetxController{
   RxList<IntroductoryData?>? list = <IntroductoryData?>[].obs;
-  RxBool isLoading = false.obs;
+  RxBool showResult = false.obs;
 
   @override
   void onInit() {
@@ -15,11 +15,8 @@ class IntroductoryController extends GetxController{
   }
 
   getResponse(){
-    isLoading.value = true;
     list?.clear();
-    list?.refresh();
-    try {
-      BaseApiService().get(apiEndPoint: ApiEndPoints().introductory, showLoader: false).then((value){
+    BaseApiService().get(apiEndPoint: ApiEndPoints().introductory).then((value){
         if (value?.statusCode ==  200) {
           IntroductoryResponse response = IntroductoryResponse.fromJson(value?.data);
           if (response.success??false) {
@@ -30,10 +27,7 @@ class IntroductoryController extends GetxController{
         }else{
           showSnackBar(subtitle: "Something went wrong, please try again");
         }
-        isLoading.value = false;
+        showResult.value = true;
       });
-    } finally {
-      isLoading.value = false;
-    }
   }
 }

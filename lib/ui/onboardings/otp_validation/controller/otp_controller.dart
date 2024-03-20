@@ -29,6 +29,8 @@ class OtpController extends GetxController{
         OtpResponse response = OtpResponse.fromJson(value?.data);
         if (response.success??false) {
           BaseStorage.write(StorageKeys.apiToken, response.data?.token??"");
+          BaseStorage.write(StorageKeys.userName, response.data?.name??"");
+          BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile??"");
           Get.off(() => const BaseSuccessScreen());
         }else{
           showSnackBar(subtitle: response.message??"");

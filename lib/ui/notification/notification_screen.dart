@@ -1,6 +1,7 @@
 import 'package:binbear/ui/base_components/base_app_bar.dart';
 import 'package:binbear/ui/base_components/base_container.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
+import 'package:binbear/ui/notification/components/notification_shimmer.dart';
 import 'package:binbear/utils/base_colors.dart';
 import 'package:binbear/utils/base_functions.dart';
 import 'package:binbear/utils/base_variables.dart';
@@ -16,6 +17,7 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
@@ -60,7 +62,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 leftMargin: horizontalScreenPadding,
                 rightPadding: 0,
                 leftPadding: 0,
-                child: ListView.builder(
+                child: isLoading ? const NotificationShimmer() : ListView.builder(
                   itemCount: 20,
                   padding: const EdgeInsets.only(right: 15, left: 17),
                   shrinkWrap: true,

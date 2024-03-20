@@ -11,7 +11,19 @@ class BaseFormFieldValidatorIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return textEditingController.text.isNotEmpty ? Padding(
       padding: EdgeInsets.only(left: leftMargin??3, right: rightMargin??0),
-      child: failedOn ? ZoomIn(child: const Icon(Icons.cancel_outlined, color: Colors.red)) : FadeIn(child: const Icon(Icons.check_circle_outline, color: Colors.green)),
+      child: failedOn ? ZoomIn(
+        duration: const Duration(milliseconds: 400),
+        child: const Icon(
+            Icons.cancel_outlined,
+            color: Colors.red,
+        ),
+      ) : FadeIn(
+        duration: const Duration(milliseconds: 300),
+          child: const Icon(
+              Icons.check_circle_outline,
+              color: Colors.green,
+          ),
+      ),
     ) : const SizedBox.shrink();
   }
 }

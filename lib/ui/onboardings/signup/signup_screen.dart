@@ -103,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           controller: controller.mobileController,
                           labelText: 'Enter Mobile Number',
                           hintText: 'Mobile Number',
-                          textInputFormatter: [controller.usPhoneMask],
+                          textInputFormatter: [usPhoneMask],
                           textInputType: TextInputType.phone,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.only(right: 13),
@@ -115,7 +115,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           onChanged: (val){
                             controller.update();
-                            print(val.replaceAll("(", "").replaceAll(")", "").replaceAll("-", "").replaceAll(" ", ""));
                           },
                         ),
                         BaseTextField(
@@ -196,26 +195,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           topMargin: 24,
                           title: "Sign up",
                           onPressed: (){
-                            print(controller.mobileController.text);
-                            if (controller.nameController.text.isEmpty) {
+                            print(controller.mobileController.text.trim());
+                            if (controller.nameController.text.trim().isEmpty) {
                               showSnackBar(subtitle: "Please Enter Full Name");
-                            }else if (controller.nameController.text.length < 2) {
+                            }else if (controller.nameController.text.trim().length < 2) {
                               showSnackBar(subtitle: "Please Enter Valid Name");
-                            }else if (controller.emailController.text.isEmpty) {
+                            }else if (controller.emailController.text.trim().isEmpty) {
                               showSnackBar(subtitle: "Please Enter Email");
-                            }else if (!GetUtils.isEmail(controller.emailController.text)) {
+                            }else if (!GetUtils.isEmail(controller.emailController.text.trim())) {
                               showSnackBar(subtitle: "Please Enter Valid Email");
-                            }else if (controller.mobileController.text.isEmpty) {
+                            }else if (controller.mobileController.text.trim().isEmpty) {
                               showSnackBar(subtitle: "Please Enter Mobile Number");
-                            }else if (controller.mobileController.text.length < 14) {
+                            }else if (controller.mobileController.text.trim().length < 14) {
                               showSnackBar(subtitle: "Please Enter Valid Mobile Number");
-                            }else if (controller.passwordController.text.isEmpty) {
+                            }else if (controller.passwordController.text.trim().isEmpty) {
                               showSnackBar(subtitle: "Please Enter Password");
-                            }else if (controller.passwordController.text.length < 8) {
+                            }else if (controller.passwordController.text.trim().length < 8) {
                               showSnackBar(subtitle: "Password Length Can't Be Less Than 8");
-                            }else if (controller.confirmPasswordController.text.isEmpty) {
+                            }else if (controller.confirmPasswordController.text.trim().isEmpty) {
                               showSnackBar(subtitle: "Please Enter Confirm Password");
-                            }else if (controller.confirmPasswordController.text != controller.passwordController.text) {
+                            }else if (controller.confirmPasswordController.text.trim() != controller.passwordController.text.trim()) {
                               showSnackBar(subtitle: "Confirm Password Is Not Matching, Please Check");
                             }else{
                               controller.callSignUpApi();

@@ -10,15 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BaseSuccessScreen extends StatelessWidget {
-  final String? description, btnTitle;
+  final String? description, btnTitle, title;
   final void Function()? onBtnTap;
-  const BaseSuccessScreen({super.key, this.description, this.btnTitle, this.onBtnTap});
+  final bool? showBackButton;
+  const BaseSuccessScreen({super.key, this.description, this.btnTitle, this.onBtnTap, this.title, this.showBackButton});
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
       child: Scaffold(
-        appBar: const BaseAppBar(showBackButton: false,),
+        appBar: BaseAppBar(showBackButton: showBackButton??false),
         body: SingleChildScrollView(
           child: AnimatedColumn(
             children: [
@@ -32,8 +33,8 @@ class BaseSuccessScreen extends StatelessWidget {
                       height: 180,
                       fit: BoxFit.fitHeight,
                     ),
-                    const BaseText(
-                      value: "Welcome Jeck!",
+                    BaseText(
+                      value: title??"Welcome Jeck!",
                       fontSize: 30,
                       color: Colors.black,
                       fontWeight: FontWeight.w600,

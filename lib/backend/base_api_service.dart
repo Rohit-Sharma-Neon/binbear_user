@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:binbear/backend/api_end_points.dart';
 import 'package:binbear/utils/base_functions.dart';
 import 'package:binbear/utils/base_variables.dart';
+import 'package:binbear/utils/get_storage.dart';
 import 'package:binbear/utils/storage_keys.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -11,7 +12,6 @@ import 'package:get_storage/get_storage.dart';
 
 class BaseApiService {
   late Dio _dio;
-  GetStorage getStorage = GetStorage();
   static final BaseApiService _singleton = BaseApiService._internal();
 
   factory BaseApiService() {
@@ -26,7 +26,6 @@ class BaseApiService {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          "Authorization": "Bearer ${getStorage.read(StorageKeys.apiToken)}",
         },
       ),
     );
@@ -62,7 +61,11 @@ class BaseApiService {
   Future<Response?> get({required String apiEndPoint, Map<String, dynamic>? queryParameters,bool? showLoader,bool? showErrorSnackbar}) async {
     showBaseLoader(showLoader: showLoader??true);
     try {
-      final Response response = await _dio.get(ApiEndPoints().baseUrl+apiEndPoint, queryParameters: queryParameters);
+      final Response response = await _dio.get(
+        ApiEndPoints().baseUrl+apiEndPoint,
+          queryParameters: queryParameters,
+          options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)}"}),
+      );
       dismissBaseLoader(showLoader: showLoader??true);
       return response;
     } on DioException catch (e) {
@@ -79,7 +82,11 @@ class BaseApiService {
   Future<Response?> post({required String apiEndPoint, dynamic data, Map<String, dynamic>? headers, bool? showLoader}) async {
     showBaseLoader(showLoader: showLoader??true);
     try {
-        final Response response = await _dio.post(ApiEndPoints().baseUrl+apiEndPoint, data: data);
+        final Response response = await _dio.post(
+          ApiEndPoints().baseUrl+apiEndPoint,
+          data: data,
+          options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)}"}),
+        );
         dismissBaseLoader(showLoader: showLoader??true);
         return response;
       } on DioException catch (e) {
@@ -96,8 +103,13 @@ class BaseApiService {
   Future<Response?> put({required String apiEndPoint, dynamic data, Map<String, dynamic>? headers, bool? showLoader}) async {
     showBaseLoader(showLoader: showLoader??true);
     try {
-      final Response response = await _dio.put(ApiEndPoints().baseUrl+apiEndPoint, data: data);
-      dismissBaseLoader(showLoader: showLoader??true);
+      final Response response = await _dio.put(
+        ApiEndPoints().baseUrl+apiEndPoint,
+        data: data,
+        options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)}"}),
+      );
+      dismissBaseLoader(showLoader: showLoader??true,
+      );
       return response;
     } on DioException catch (e) {
       dismissBaseLoader(showLoader: showLoader??true);

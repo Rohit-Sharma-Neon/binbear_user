@@ -31,7 +31,7 @@ class BaseTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final Color? hintTextColor;
 
-  const BaseTextField({super.key, required this.controller, this.obscureText, required this.hintText, this.textInputAction, this.textInputType, this.textInputFormatter, this.suffixIcon, this.prefixIcon, this.errorText, this.borderRadius, this.fillColor, this.txtColor, this.borderColor, this.maxLine, this.contentPadding, this.hintTxtSize, this.onTap, this.readOnly, this.hintTextColor, this.validator, this.maxLength, this.underLine = false, this.onChanged, this.focusNode, this.initialValue, required this.labelText, this.topMargin, this.bottomMargin, this.rightMargin, this.leftMargin});
+  const BaseTextField({super.key, required this.controller, this.obscureText, required this.labelText, required this.hintText, this.textInputAction, this.textInputType, this.textInputFormatter, this.suffixIcon, this.prefixIcon, this.errorText, this.borderRadius, this.fillColor, this.txtColor, this.borderColor, this.maxLine, this.contentPadding, this.hintTxtSize, this.onTap, this.readOnly, this.hintTextColor, this.validator, this.maxLength, this.underLine = false, this.onChanged, this.focusNode, this.initialValue, this.topMargin, this.bottomMargin, this.rightMargin, this.leftMargin});
   @override
   Widget build(BuildContext context) {
     return Padding(

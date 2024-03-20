@@ -69,13 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: const EdgeInsets.only(right: 13),
                             child: SvgPicture.asset(BaseAssets.icEmail),
                           ),
-                          suffixIcon: BaseFormFieldValidatorIcon(
-                            textEditingController: controller.emailController,
-                            failedOn: !GetUtils.isEmail(controller.emailController.text),
-                          ),
-                          onChanged: (val){
-                            controller.update();
-                          },
                         );
                       },
                     ),
@@ -88,9 +81,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: 'Enter Password',
                           textInputType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
-                          onChanged: (val){
-                            controller.update();
-                          },
                           prefixIcon: Padding(
                             padding: const EdgeInsets.only(right: 13),
                             child: SvgPicture.asset(BaseAssets.icLock),
@@ -108,11 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   padding: const EdgeInsets.only(left: 3),
                                   child: controller.obscurePassword ? const Icon(Icons.visibility_off, size: 24) : const Icon(Icons.visibility, size: 24),
                                 ),
-                              ),
-                              BaseFormFieldValidatorIcon(
-                                leftMargin: 6,
-                                textEditingController: controller.passwordController,
-                                failedOn: controller.passwordController.text.length < 8,
                               ),
                             ],
                           ),

@@ -13,4 +13,11 @@ class ApiEndPoints {
   final String helpSupport = "faq";
   final String introductory = "videos";
   final String login = "login";
+  final String contactUs = "contact_us";
+  final String enableNotifications = "usernotify";
+  final String changePassword = "change-password";
+  final String getUserProfile = "getuserprofile";
+  final String editUserProfile = "edituserprofile";
+  final String getHomeData = "homepage";
+  final String myBookings = "my_bookings";
 }

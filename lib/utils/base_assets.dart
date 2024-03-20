@@ -35,4 +35,6 @@ class BaseAssets {
   static const String icCreditCards = "assets/images/ic_credit_cards.png";
   static const String icUpload = "assets/images/ic_upload.svg";
   static const String noDataLottieJson = "assets/images/no_data_lottie.json";
+  static const String icVideoPlayButton = "assets/images/ic_video_play_btn.svg";
+  static const String dummyProfileLottie = "assets/images/dummy_profile_lottie.json";
 }

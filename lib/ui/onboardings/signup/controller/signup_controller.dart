@@ -17,12 +17,6 @@ class SignUpController extends GetxController{
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
 
-  MaskTextInputFormatter usPhoneMask = MaskTextInputFormatter(
-      mask: '(###) ###-####',
-      filter: { "#": RegExp(r'[0-9]') },
-      type: MaskAutoCompletionType.lazy
-  );
-
   callSignUpApi(){
     Map<String, String> data = {
       "name":nameController.text.trim(),
@@ -39,7 +33,6 @@ class SignUpController extends GetxController{
         BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
         if (response.success??false) {
           Get.to(()=> const OtpScreen());
-          // showSnackBar(subtitle: response.message??"", isSuccess: true);
         }else{
           showSnackBar(subtitle: response.message??"");
         }

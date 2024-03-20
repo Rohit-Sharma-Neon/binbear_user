@@ -147,6 +147,12 @@ class BaseLocalization extends Translations {
       "No Internet Connection":'No Internet Connection',
       "Something went wrong, please try again":'Something went wrong, please try again',
       "About Us":'About Us',
+      "Message":'Message',
+      "Write here...":'Write here...',
+      "Enter Email":'Enter Email',
+      "Email Us":'Email Us',
+      "Thank you!":'Thank you!',
+      "We've received your message. Someone from our team will contact you soon.":"We've received your message. Someone from our team will contact you soon.",
     },
 
     'de_DE': {

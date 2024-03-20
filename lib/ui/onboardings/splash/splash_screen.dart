@@ -1,3 +1,4 @@
+
 import 'package:animate_do/animate_do.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/bookings_tab/controller/bookings_controller.dart';
@@ -11,7 +12,6 @@ import 'package:binbear/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,8 +23,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   BaseController baseController = Get.put(BaseController());
   DashboardController dashboardController = Get.put(DashboardController());
-  BookingsController bookingsController = Get.put(BookingsController());
-
   bool showFooter = true;
 
   @override
@@ -57,12 +55,16 @@ class _SplashScreenState extends State<SplashScreen> {
               ZoomIn(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 90),
-                  child: Hero(
+                  child: BaseStorage.read(StorageKeys.apiToken).toString().isNotEmpty ?
+                  Hero(
                     tag: "splash_tag",
                     child: SvgPicture.asset(
                       BaseAssets.appLogoWithName,
                       width: MediaQuery.of(context).size.width,
                     ),
+                  ) : SvgPicture.asset(
+                    BaseAssets.appLogoWithName,
+                    width: MediaQuery.of(context).size.width,
                   ),
                 ),
               ),

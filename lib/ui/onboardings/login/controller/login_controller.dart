@@ -7,6 +7,7 @@ import 'package:binbear/utils/get_storage.dart';
 import 'package:binbear/utils/storage_keys.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class LoginController extends GetxController{
   TextEditingController emailController = TextEditingController();
@@ -23,6 +24,8 @@ class LoginController extends GetxController{
         LoginResponse response = LoginResponse.fromJson(value?.data);
         if (response.success??false) {
           BaseStorage.write(StorageKeys.apiToken, response.data?.token??"");
+          BaseStorage.write(StorageKeys.userName, response.data?.name??"");
+          BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile??"");
           Get.offAll(() => const DashBoardScreen());
         }else{
           showSnackBar(subtitle: response.message??"");

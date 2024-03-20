@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:binbear/ui/base_components/animated_column.dart';
 import 'package:binbear/ui/base_components/base_app_bar.dart';
 import 'package:binbear/ui/base_components/base_button.dart';
 import 'package:binbear/ui/base_components/base_container.dart';
+import 'package:binbear/ui/base_components/base_dummy_profile.dart';
+import 'package:binbear/ui/base_components/base_form_field_validator_icon.dart';
 import 'package:binbear/ui/base_components/base_radio_button.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
@@ -26,6 +30,11 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
 
   ProfileController controller = Get.find<ProfileController>();
+  @override
+  void initState() {
+    super.initState();
+    controller.setData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +72,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         children: [
                           Hero(
                             tag: "profile_image",
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(90),
-                              child: Image.asset(
-                                "assets/delete/dummy_profile.jpeg", width: 120, height: 120, fit: BoxFit.fill),
+                            child: Obx(() {
+                              if ((controller.selectedImage?.value?.path??"").isNotEmpty) {
+                                return Image.file(controller.selectedImage?.value??File(""));
+                              }else if ((controller.profileData?.value?.profile?.toString()??"").isNotEmpty) {
+                                return Image.network(
+                                  controller.profileData?.value?.profile?.toString()??"",
+                                  width: 118,
+                                  height: 118,
+                                  fit: BoxFit.fill,
+                                );
+                              }else{
+                                return const BaseDummyProfile(overflowHeight: 140, overflowWidth: 190, topMargin: 10);
+                              }
+                            },
                             ),
                           ),
                           Positioned(
@@ -86,35 +105,90 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           )
                         ],
                       ),
-                      BaseTextField(
-                        topMargin: 30,
-                        controller: TextEditingController(),
-                        labelText: "Name",
-                        hintText: "Enter Full Name",
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: SvgPicture.asset(BaseAssets.icPerson),
-                        ),
+                      GetBuilder<ProfileController>(
+                        builder: (ProfileController controller) {
+                          return BaseTextField(
+                            topMargin: 30,
+                            controller: controller.nameController,
+                            labelText: "Name",
+                            hintText: "Enter Full Name",
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: SvgPicture.asset(BaseAssets.icPerson),
+                            ),
+                            suffixIcon: BaseFormFieldValidatorIcon(
+                              textEditingController: controller.nameController,
+                              failedOn: controller.nameController.text.length < 2,
+                            ),
+                            onChanged: (val){
+                              controller.update();
+                            },
+                          );
+                        },
                       ),
-                      BaseTextField(
-                        topMargin: 15,
-                        controller: TextEditingController(),
-                        labelText: "Email Address",
-                        hintText: "Email Address",
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: SvgPicture.asset(BaseAssets.icEmail),
-                        ),
+                      GetBuilder<ProfileController>(
+                        builder: (ProfileController controller) {
+                          return IgnorePointer(
+                            child: BaseTextField(
+                              topMargin: 15,
+                              controller: controller.emailController,
+                              labelText: "Email Address",
+                              hintText: "Email Address",
+                              readOnly: true,
+                              onTap: (){},
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: SvgPicture.asset(BaseAssets.icEmail),
+                              ),
+                              suffixIcon: BaseFormFieldValidatorIcon(
+                                textEditingController: controller.emailController,
+                                failedOn: !GetUtils.isEmail(controller.emailController.text),
+                              ),
+                              onChanged: (val){
+                                controller.update();
+                              },
+                            ),
+                          );
+                        },
                       ),
-                      BaseTextField(
-                        topMargin: 15,
-                        controller: TextEditingController(),
-                        labelText: "Mobile Number",
-                        hintText: "Enter Mobile Number",
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: SvgPicture.asset(BaseAssets.icPhone),
-                        ),
+                      GetBuilder<ProfileController>(
+                        builder: (ProfileController controller) {
+                          return IgnorePointer(
+                            child: BaseTextField(
+                              topMargin: 15,
+                              controller: controller.mobileController,
+                              labelText: "Mobile Number",
+                              hintText: "Enter Mobile Number",
+                              textInputFormatter: [usPhoneMask],
+                              textInputType: TextInputType.phone,
+                              readOnly: true,
+                              onTap: (){},
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SvgPicture.asset(BaseAssets.icPhone),
+                                    const BaseText(
+                                      leftMargin: 7,
+                                      value: "+1",
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              suffixIcon: BaseFormFieldValidatorIcon(
+                                textEditingController: controller.mobileController,
+                                failedOn: controller.mobileController.text.length < 14,
+                              ),
+                              onChanged: (val){
+                                controller.update();
+                              },
+                            ),
+                          );
+                        },
                       ),
                       const Align(
                         alignment: Alignment.topLeft,
@@ -131,14 +205,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           children: [
                             BaseRadioButton(
                               value: "Male",
-                              selectedValue: controller.selectedGender.value,
+                              selectedValue: controller.selectedGender.value.capitalizeFirst??"",
                               onTap: () {
                                 controller.selectedGender.value = "Male";
                               },
                             ),
                             BaseRadioButton(
                               value: "Female",
-                              selectedValue: controller.selectedGender.value,
+                              selectedValue: controller.selectedGender.value.capitalizeFirst??"",
                               onTap: () {
                                 controller.selectedGender.value = "Female";
                               },
@@ -152,8 +226,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         btnHeight: 60,
                         title: "Save",
                         onPressed: (){
-                          triggerHapticFeedback();
-                          Get.back();
+                          if (controller.nameController.text.trim().isEmpty) {
+                            showSnackBar(subtitle: "Please Enter Full Name");
+                          }else if (controller.nameController.text.trim().length < 2) {
+                            showSnackBar(subtitle: "Please Enter Valid Name");
+                          }else{
+                            controller.updateProfile();
+                          }
                         },
                       ),
                     ],
