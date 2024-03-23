@@ -1,6 +1,6 @@
 import 'package:binbear/backend/api_end_points.dart';
 import 'package:binbear/backend/base_api_service.dart';
-import 'package:binbear/backend/base_success_response.dart';
+import 'package:binbear/backend/base_responses/base_success_response.dart';
 import 'package:binbear/ui/profile_tab/controller/profile_controller.dart';
 import 'package:binbear/utils/base_functions.dart';
 import 'package:get/get.dart';

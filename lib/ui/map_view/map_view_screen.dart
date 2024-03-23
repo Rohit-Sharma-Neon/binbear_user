@@ -1,24 +1,30 @@
-import 'package:binbear/ui/base_components/animated_column.dart';
-import 'package:binbear/ui/base_components/base_app_bar.dart';
-import 'package:binbear/ui/base_components/base_button.dart';
-import 'package:binbear/ui/base_components/base_container.dart';
-import 'package:binbear/ui/base_components/base_outlined_button.dart';
-import 'package:binbear/ui/base_components/base_text.dart';
-import 'package:binbear/ui/dashboard_module/dashboard_screen/dashboard_screen.dart';
-import 'package:binbear/ui/manual_address/components/address_search_field.dart';
-import 'package:binbear/ui/map_view/controller/map_view_controller.dart';
-import 'package:binbear/utils/base_assets.dart';
-import 'package:binbear/utils/base_colors.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:binbear/ui/base_components/base_map_header_shadow.dart';
+import 'package:binbear/ui/manage_address/manage_address_screen.dart';
+import 'package:binbear/utils/base_functions.dart';
 import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:scaled_app/scaled_app.dart';
+import '../../utils/base_assets.dart';
+import '../../utils/base_colors.dart';
+import '../base_components/animated_column.dart';
+import '../base_components/base_app_bar.dart';
+import '../base_components/base_button.dart';
+import '../base_components/base_container.dart';
+import '../base_components/base_outlined_button.dart';
+import '../base_components/base_text.dart';
+import '../manual_address/components/address_search_field.dart';
+import 'controller/map_view_controller.dart';
 
 class MapViewScreen extends StatefulWidget {
   final double? lat, long;
-  const MapViewScreen({super.key, this.lat, this.long});
+  final String? mainAddress;
+  final String? subAddress;
+  final String? fullAddress;
+  const MapViewScreen({super.key, this.lat, this.long, this.mainAddress, this.subAddress, this.fullAddress});
 
   @override
   State<MapViewScreen> createState() => _MapViewScreenState();
@@ -27,13 +33,15 @@ class MapViewScreen extends StatefulWidget {
 class _MapViewScreenState extends State<MapViewScreen> {
 
   final MapViewController controller = Get.find<MapViewController>();
+
   @override
   void initState() {
     super.initState();
     controller.addMarker(latitude: widget.lat??0, longitude: widget.long??0);
+    controller.searchController.clear();
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).scale(),
@@ -41,11 +49,29 @@ class _MapViewScreenState extends State<MapViewScreen> {
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.white,
         extendBody: true,
-        appBar: const BaseAppBar(
+        appBar: BaseAppBar(
           title: "Select Delivery Location",
           contentColor: Colors.black,
           titleSize: 19,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
+          bottomWidgetHeight: 60,
+          bottomChild: FadeInDown(
+            duration: const Duration(milliseconds: 400),
+            child: AddressSearchField(
+              topMargin: 0,
+              controller: controller.searchController,
+              onCloseTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                controller.searchController.clear();
+                controller.searchResultList.clear();
+                controller.searchResultList.refresh();
+              }, onChanged: (val) {
+              if (val.isNotEmpty) {
+                controller.debouncer.run(()=> controller.onChanged());
+              }
+            },
+            ),
+          ),
         ),
         body: Stack(
           children: [
@@ -56,35 +82,80 @@ class _MapViewScreenState extends State<MapViewScreen> {
                   mapType: MapType.normal,
                   myLocationEnabled: true,
                   initialCameraPosition: controller.getInitialCameraPosition(lat: widget.lat??0, long: widget.long??0),
+                  markers: Set<Marker>.of(controller.markers),
+                  zoomControlsEnabled: false,
                   onMapCreated: (GoogleMapController googleMapController) {
                     controller.mapController.complete(googleMapController);
                   },
-                  markers: Set<Marker>.of(controller.markers),
                 );
               },
             ),
-            Container(
-              width: double.infinity,
-              height: 150,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.9),
-                    Colors.white.withOpacity(0.6),
-                    Colors.white.withOpacity(0.4),
-                    Colors.white.withOpacity(0.1),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.2, 0.4, 0.6, 1],
+            const BaseMapHeaderShadow(),
+            Obx(()=>Visibility(
+                visible: controller.searchResultList.isNotEmpty,
+                child: Container(
+                  margin: const EdgeInsets.only(
+                    right: horizontalScreenPadding,
+                    left: horizontalScreenPadding,
+                    top: 160,
+                    bottom: 5,
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: BaseColors.secondaryColor, width: 0.9),
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: 3,
+                            spreadRadius: 1.5,
+                            color: BaseColors.secondaryColor.withOpacity(0.4),
+                            offset: const Offset(0,2.5)
+                        ),
+                      ],
+                  ),
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: controller.searchResultList.length,
+                    itemBuilder: (context, index) {
+                      return Obx(()=>Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: (){
+                                triggerHapticFeedback();
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                controller.selectedLocation.value = controller.searchResultList[index];
+                                controller.searchController.text = controller.searchResultList[index]["description"];
+                                controller.searchResultList.value = [];
+                                controller.searchResultList.clear();
+                                controller.searchResultList.refresh();
+                                print("Search Result List Length: ");
+                                print(controller.searchResultList.length.toString());
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                    child: Text(controller.searchResultList[index]["description"])),
+                              ),
+                            ),
+                            Visibility(
+                              visible: controller.searchResultList.length != (index+1),
+                                child: const Divider(height: 0,
+                                ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              child: AddressSearchField(topMargin: 85,
-              ),
-            ),
+            )
           ],
         ),
         bottomNavigationBar: Column(
@@ -111,6 +182,9 @@ class _MapViewScreenState extends State<MapViewScreen> {
                 ],
               ),
               onPressed: (){
+                FocusManager.instance.primaryFocus?.unfocus();
+                controller.searchController.clear();
+                controller.searchResultList.clear();
                 controller.locateToCurrentLocation();
               },
             ),
@@ -126,15 +200,18 @@ class _MapViewScreenState extends State<MapViewScreen> {
               rightMargin: horizontalScreenPadding,
               leftMargin: horizontalScreenPadding,
               child: AnimatedColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: BaseText(
-                          value: "207 A",
+                          value: widget.mainAddress??"",
                           fontSize: 15,
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       BaseButton(
@@ -149,10 +226,10 @@ class _MapViewScreenState extends State<MapViewScreen> {
                       ),
                     ],
                   ),
-                  const BaseText(
-                    value: "Mile Post, 96 NY State, Thruway, Ruby, NY 12475, United States",
+                  BaseText(
+                    value: widget.subAddress??"",
                     fontSize: 11.5,
-                    color: Color(0xffFBE6D3),
+                    color: const Color(0xffFBE6D3),
                     fontWeight: FontWeight.w400,
                   ),
                   BaseButton(
@@ -160,7 +237,13 @@ class _MapViewScreenState extends State<MapViewScreen> {
                     topMargin: 20,
                     bottomMargin: 12,
                     onPressed: (){
-                      Get.to(()=> const DashBoardScreen());
+                      Get.to(()=> ManageAddressScreen(
+                        lat: widget.lat??0,
+                        long: widget.long??0,
+                        mainAddress: widget.mainAddress??"",
+                        subAddress: widget.subAddress??"",
+                        fullAddress: widget.fullAddress??"",
+                      ));
                     },
                   )
                 ],

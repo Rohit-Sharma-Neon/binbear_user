@@ -10,7 +10,7 @@ class BaseText extends StatelessWidget {
   final FontWeight? fontWeight;
   final TextAlign? textAlign;
   final int? maxLines;
-  final bool? enableHapticFeedback, hideKeyboard;
+  final bool? enableHapticFeedback, hideKeyboard, lineThrough;
   final void Function()? onTap;
   final TextOverflow? overflow;
   const BaseText({
@@ -27,7 +27,7 @@ class BaseText extends StatelessWidget {
     this.onTap,
     this.onTapTopPadding, this.onTapBottomPadding, this.onTapLeftPadding, this.onTapRightPadding,
     this.enableHapticFeedback,
-    this.hideKeyboard,
+    this.hideKeyboard, this.lineThrough,
   });
 
   @override
@@ -56,6 +56,7 @@ class BaseText extends StatelessWidget {
             style: TextStyle(
               fontSize: fontSize ?? 14,
               height: height,
+              // decoration: (lineThrough??false) ? TextDecoration.lineThrough : null,
               color: color ?? Colors.black,
               fontWeight: fontWeight ?? FontWeight.w400,
             ),

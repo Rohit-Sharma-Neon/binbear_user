@@ -6,7 +6,8 @@ import 'package:flutter_svg/svg.dart';
 
 class BaseBookingShimmer extends StatelessWidget {
   final double? tileWidth, leftMargin, rightMargin, topMargin, bottomMargin;
-  const BaseBookingShimmer({super.key, this.tileWidth, this.leftMargin, this.rightMargin, this.topMargin, this.bottomMargin});
+  final bool isPastBooking;
+  const BaseBookingShimmer({super.key, this.tileWidth, this.leftMargin, this.rightMargin, this.topMargin, this.bottomMargin, required this.isPastBooking});
 
   @override
   Widget build(BuildContext context) {

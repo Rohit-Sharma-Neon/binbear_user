@@ -1,9 +1,10 @@
-import 'package:binbear/ui/base_components/base_outlined_button.dart';
-import 'package:binbear/ui/base_components/base_text.dart';
-import 'package:binbear/utils/base_assets.dart';
-import 'package:binbear/utils/base_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../utils/base_assets.dart';
+import '../../../utils/base_colors.dart';
+import '../../base_components/base_outlined_button.dart';
+import '../../base_components/base_text.dart';
 
 class ManualAddressListTile extends StatelessWidget {
   final String title, subtitle;

@@ -11,8 +11,8 @@ class HomeBookingsShimmer extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          BaseBookingShimmer(leftMargin: horizontalScreenPadding, rightMargin: 6,),
-          BaseBookingShimmer(rightMargin: horizontalScreenPadding,),
+          BaseBookingShimmer(leftMargin: horizontalScreenPadding, rightMargin: 6, isPastBooking: false),
+          BaseBookingShimmer(rightMargin: horizontalScreenPadding, isPastBooking: false),
         ],
       ),
     );

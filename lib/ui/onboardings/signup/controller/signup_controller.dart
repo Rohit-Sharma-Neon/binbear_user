@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import '../../../../backend/base_success_response.dart';
+import '../../../../backend/base_responses/base_success_response.dart';
 import '../../../../utils/base_functions.dart';
 
 class SignUpController extends GetxController{

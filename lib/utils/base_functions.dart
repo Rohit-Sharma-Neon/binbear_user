@@ -17,6 +17,22 @@ MaskTextInputFormatter usPhoneMask = MaskTextInputFormatter(
     type: MaskAutoCompletionType.lazy
 );
 
+String formatBackendDate(String dateString, {bool? getDayFirst}) {
+  if (dateString.isNotEmpty && dateString != "null") {
+    DateTime date = DateTime.parse(dateString);
+    String day = date.day.toString().padLeft(2, '0');
+    String month = date.month.toString().padLeft(2, '0');
+    String year = date.year.toString().substring(0);
+    if (getDayFirst??true) {
+      return '$day-$month-$year';
+    }else{
+      return '$year-$month-$day';
+    }
+  }else{
+    return "";
+  }
+}
+
 void showBaseLoader({bool? showLoader}) {
   if (showLoader??true) {
     Get.context!.loaderOverlay.show();

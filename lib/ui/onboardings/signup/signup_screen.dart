@@ -6,7 +6,6 @@ import 'package:binbear/ui/base_components/base_form_field_validator_icon.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
 import 'package:binbear/ui/base_components/base_textfield.dart';
-import 'package:binbear/ui/onboardings/otp_validation/otp_screen.dart';
 import 'package:binbear/ui/onboardings/signup/controller/signup_controller.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_colors.dart';

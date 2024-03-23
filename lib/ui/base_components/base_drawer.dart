@@ -45,6 +45,10 @@ class BaseDrawer extends StatelessWidget {
           ),
           const Divider(thickness: 0.6, color: Colors.grey, height: 35),
           drawerListTiles(
+            title: 'Manage Address',
+            onTap: () {},
+          ),
+          drawerListTiles(
             title: 'Our Story',
             onTap: () {},
           ),

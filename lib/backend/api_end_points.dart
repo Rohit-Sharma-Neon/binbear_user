@@ -20,4 +20,10 @@ class ApiEndPoints {
   final String editUserProfile = "edituserprofile";
   final String getHomeData = "homepage";
   final String myBookings = "my_bookings";
+  final String notificationList = "notificationlist";
+  final String markAllAsRead = "allmarkasread";
+  final String bookingDetail = "booking_detail";
+  final String giveBookingRating = "addrating";
+  final String addAddress = "addaddress";
+  final String couponList = "couponlist";
 }

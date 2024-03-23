@@ -318,7 +318,9 @@ class HomeBookings {
   dynamic status;
   dynamic serviceStatus;
   dynamic createdAt;
+  dynamic time;
   dynamic updatedAt;
+  dynamic distance;
   SubCategoryData? subCategoryData;
   CategoryData? categoryData;
   dynamic binbearData;
@@ -330,6 +332,8 @@ class HomeBookings {
         this.assignedProvider,
         this.assignedDriver,
         this.userId,
+        this.time,
+        this.distance,
         this.categoryId,
         this.subCategoryId,
         this.noOfCane,
@@ -346,9 +350,11 @@ class HomeBookings {
 
   HomeBookings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    distance = json['distance'];
     assignedProvider = json['assigned_provider'];
     assignedDriver = json['assigned_driver'];
     userId = json['user_id'];
+    time = json['time'];
     categoryId = json['category_id'];
     subCategoryId = json['sub_category_id'];
     noOfCane = json['no_of_cane'];
@@ -373,6 +379,8 @@ class HomeBookings {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['distance'] = distance;
+    data['time'] = time;
     data['assigned_provider'] = assignedProvider;
     data['assigned_driver'] = assignedDriver;
     data['user_id'] = userId;

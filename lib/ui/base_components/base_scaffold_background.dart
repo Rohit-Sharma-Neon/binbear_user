@@ -8,17 +8,14 @@ class BaseScaffoldBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: MediaQuery.of(context).scale(),
-      child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(BaseAssets.bgScaffold),
-            fit: BoxFit.fill,
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(BaseAssets.bgScaffold),
+          fit: BoxFit.fill,
         ),
-        child: child,
       ),
+      child: child,
     );
   }
 }

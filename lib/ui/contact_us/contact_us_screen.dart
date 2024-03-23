@@ -3,7 +3,7 @@ import 'package:binbear/ui/base_components/base_app_bar.dart';
 import 'package:binbear/ui/base_components/base_button.dart';
 import 'package:binbear/ui/base_components/base_container.dart';
 import 'package:binbear/ui/base_components/base_form_field_validator_icon.dart';
-import 'package:binbear/ui/base_components/base_loader.dart';
+import 'package:binbear/ui/base_components/base_no_data.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
 import 'package:binbear/ui/base_components/base_textfield.dart';

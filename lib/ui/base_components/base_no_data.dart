@@ -6,7 +6,9 @@ import 'package:lottie/lottie.dart';
 import 'base_text.dart';
 
 class BaseNoData extends StatelessWidget {
-  const BaseNoData({super.key});
+  final String? message;
+  final Color? textColor;
+  const BaseNoData({super.key, this.message, this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,10 @@ class BaseNoData extends StatelessWidget {
                   ),
               ),
           ),
-          const BaseText(
-            value: "No Data Found!",
+          BaseText(
+            value: message??"No Data Found!",
             fontSize: 16,
-            color: Colors.white,
+            color: textColor??Colors.white,
             fontWeight: FontWeight.w700,
           ),
         ],

@@ -1,20 +1,86 @@
 import 'dart:developer';
 
+import 'package:binbear/backend/base_responses/autocomplete_api_response.dart';
+import 'package:binbear/utils/base_debouncer.dart';
 import 'package:binbear/utils/base_functions.dart';
+import 'package:binbear/utils/base_strings.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
+import 'package:dio/dio.dart' as as_dio;
+
+import 'package:uuid/uuid.dart';
 
 class BaseController extends GetxController{
 
   late BitmapDescriptor defaultMarker;
+  /// Map AutoComplete Variables
+  BaseDebouncer debouncer = BaseDebouncer();
+  String sessionToken = "";
+  var uuid = const Uuid();
+  as_dio.Dio dio = as_dio.Dio();
+  RxList<AutoCompleteResult> searchResultList = <AutoCompleteResult>[].obs;
+  TextEditingController searchController = TextEditingController();
+  RxBool isAddressSuggestionLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     loadMarker();
+  }
+
+  getSuggestionsList(String input) {
+    if (input.isNotEmpty) {
+      debouncer.run(() async {
+        isAddressSuggestionLoading.value = true;
+        if (sessionToken.isEmpty) {
+          sessionToken = uuid.v4();
+        }
+        dio = as_dio.Dio();
+        String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+        String request = '$baseURL?input=$input&key=$googleApiKey&sessiontoken=$sessionToken';
+        print("Input: $input");
+        print("API Key: $googleApiKey");
+        as_dio.Response response = await dio.get(request);
+        AutoCompleteApiResponse autoCompleteApiResponse = AutoCompleteApiResponse.fromJson(response.data);
+        isAddressSuggestionLoading.value = false;
+        if ((autoCompleteApiResponse.status?.toString().toLowerCase()??"") == "ok") {
+          searchResultList.value = autoCompleteApiResponse.predictions??[];
+        } else {
+          throw Exception('Failed to load predictions');
+        }
+      });
+    }else{
+      searchResultList.clear();
+      searchResultList.refresh();
+    }
+  }
+
+  //  Future<LatLng?> getLatLngFromPlaceId({required String placeId}) async {
+  //   showBaseLoader();
+  //   final request = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=address_component&key=$googleApiKey&sessiontoken=$sessionToken';
+  //   as_dio.Response response = await dio.get(request);
+  //   dismissBaseLoader();
+  //   PlaceApiResponse placeApiResponse = PlaceApiResponse.fromJson(response.data);
+  //   if (placeApiResponse.status.toString().toLowerCase() == "ok") {
+  //     return LatLng(placeApiResponse.result?.geometry?.location?.lat??0, placeApiResponse.result?.geometry?.location?.lng??0);
+  //   } else {
+  //     showSnackBar(subtitle: "Nothing Found!");
+  //     return LatLng(placeApiResponse.result?.geometry?.location?.lat??0, placeApiResponse.result?.geometry?.location?.lng??0);
+  //   }
+  // }
+
+  Future<LatLng?> getLatLngFromPlaceId({required String address}) async {
+    List<Location> locations = await locationFromAddress(address);
+    if (locations.isNotEmpty) {
+      return LatLng(locations.first.latitude, locations.first.longitude);
+    }else {
+      return const LatLng(0, 0);
+    }
   }
 
   Future<Position?> getCurrentLocation() async {

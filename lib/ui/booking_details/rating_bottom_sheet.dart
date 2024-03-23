@@ -1,6 +1,7 @@
 import 'package:binbear/ui/base_components/animated_column.dart';
 import 'package:binbear/ui/base_components/base_button.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
+import 'package:binbear/ui/booking_details/controller/booking_details_controller.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_functions.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class RatingBottomSheet extends StatelessWidget {
-  const RatingBottomSheet({super.key});
+  final String bookingId;
+  const RatingBottomSheet({super.key, required this.bookingId});
 
   @override
   Widget build(BuildContext context) {
+    double selectedRating = 3;
     return AnimatedColumn(
       leftPadding: 20,
       rightPadding: 20,
@@ -44,7 +47,7 @@ class RatingBottomSheet extends StatelessWidget {
           ),
         ),
         RatingBar(
-          initialRating: 3,
+          initialRating: selectedRating,
           direction: Axis.horizontal,
           allowHalfRating: false,
           itemCount: 5,
@@ -56,14 +59,14 @@ class RatingBottomSheet extends StatelessWidget {
           ),
           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
           onRatingUpdate: (rating) {
-            print(rating);
+            selectedRating = rating;
           },
         ),
         BaseButton(
           title: "Submit",
           bottomMargin: 20,
           onPressed: (){
-            Get.back(closeOverlays: true, canPop: false);
+            Get.find<BookingDetailsController>().giveBookingRating(bookingId: bookingId, rating: selectedRating.toString());
           },
         )
       ],

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:binbear/backend/api_end_points.dart';
 import 'package:binbear/backend/base_api_service.dart';
 import 'package:binbear/ui/home_tab/model/home_response.dart';

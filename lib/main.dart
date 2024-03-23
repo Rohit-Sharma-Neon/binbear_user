@@ -1,4 +1,5 @@
 import 'package:binbear/ui/base_components/base_text.dart';
+import 'package:binbear/ui/manage_address/manage_address_screen.dart';
 import 'package:binbear/ui/onboardings/splash/splash_screen.dart';
 import 'package:binbear/utils/base_colors.dart';
 import 'package:binbear/utils/base_localization.dart';
@@ -6,13 +7,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:scaled_app/scaled_app.dart';
 
-void main() async {
-  ScaledWidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init('MyStorage');
+import 'ui/manual_address/manual_address_screen.dart';
+
+void main() {
   runAppScaled(const MyApp(), scaleFactor: (deviceSize){
     const double widthOfDesign = 375;
     return deviceSize.width / widthOfDesign;
@@ -53,7 +53,18 @@ class _MyAppState extends State<MyApp> {
                       ),
                     );
                   },
-                  child: child!,
+                  child: MediaQuery(
+                    data: MediaQuery.of(context).scale(),
+                    // child: Container(
+                    //   decoration: const BoxDecoration(
+                    //     image: DecorationImage(
+                    //       image: AssetImage(BaseAssets.bgScaffold),
+                    //       fit: BoxFit.fill,
+                    //     ),
+                    //   ),
+                      child: child!,
+                    // ),
+                  ),
                 ),
               ),
               StreamBuilder(
@@ -95,7 +106,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.transparent,
         fontFamily: 'NunitoSans',
-        pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: FadeUpwardsPageTransitionsBuilder()}),
+        pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(), TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder()}),
       ),
       home: const SplashScreen(),
     );

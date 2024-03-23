@@ -7,10 +7,14 @@ import 'package:binbear/ui/base_components/base_app_bar.dart';
 import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
 import 'package:binbear/ui/base_payment_screen.dart';
+import 'package:binbear/ui/coupons_list/coupon_list_screen.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_colors.dart';
+import 'package:binbear/utils/base_functions.dart';
 import 'package:binbear/utils/base_variables.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -137,6 +141,7 @@ class _WeekOrMonthConfirmScreenState extends State<WeekOrMonthConfirmScreen> {
                 leftPadding: horizontalScreenPadding,
                 rightPadding: horizontalScreenPadding,
                 topPadding: 10,
+                bottomMargin: 0,
                 bottomPadding: 12,
                 borderRadius: 14,
                 child: Column(
@@ -150,6 +155,15 @@ class _WeekOrMonthConfirmScreenState extends State<WeekOrMonthConfirmScreen> {
                       color: Colors.black,
                       fontWeight: FontWeight.w400,
                     ),
+                    // Obx(()=> const BaseText(
+                    //     value: "\$400.00",
+                    //     fontSize: 16,
+                    //     lineThrough: true,
+                    //     bottomMargin: 0,
+                    //     color: Colors.black,
+                    //     fontWeight: FontWeight.w700,
+                    //   ),
+                    // ),
                     BaseText(
                       value: "\$400.00",
                       fontSize: 32,
@@ -157,6 +171,93 @@ class _WeekOrMonthConfirmScreenState extends State<WeekOrMonthConfirmScreen> {
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
                     ),
+                  ],
+                ),
+              ),
+              BaseContainer(
+                topMargin: 15,
+                rightMargin: horizontalScreenPadding,
+                leftMargin: horizontalScreenPadding,
+                leftPadding: horizontalScreenPadding,
+                rightPadding: horizontalScreenPadding,
+                topPadding: 10,
+                bottomPadding: 12,
+                borderRadius: 14,
+                bottomMargin: 0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const BaseText(
+                      value: "Apply Coupon",
+                      fontSize: 13,
+                      bottomMargin: 8,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        triggerHapticFeedback();
+                        Get.to(() => const CouponListScreen())?.then((value) {
+                          if (value != null) {
+
+                          }
+                        });
+                      },
+                      child: const Row(
+                        children: [
+                          Expanded(
+                            child: BaseText(
+                              value: "Enter Coupon Code",
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Icon(Icons.arrow_forward_ios_rounded, size: 11,)
+                        ],
+                      ),
+                    ),
+                    const Divider(color: Colors.grey, height: 15, thickness: 0.6,)
+                  ],
+                ),
+              ),
+              BaseContainer(
+                topMargin: 15,
+                rightMargin: horizontalScreenPadding,
+                leftMargin: horizontalScreenPadding,
+                leftPadding: horizontalScreenPadding,
+                rightPadding: horizontalScreenPadding,
+                topPadding: 10,
+                bottomPadding: 12,
+                borderRadius: 14,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const BaseText(
+                      value: "Select Address",
+                      fontSize: 13,
+                      bottomMargin: 8,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: (){},
+                      child: const Row(
+                        children: [
+                          Expanded(
+                            child: BaseText(
+                              value: "Select Your Address",
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Icon(Icons.arrow_forward_ios_rounded, size: 11,)
+                        ],
+                      ),
+                    ),
+                    const Divider(color: Colors.grey, height: 15, thickness: 0.6,)
                   ],
                 ),
               ),

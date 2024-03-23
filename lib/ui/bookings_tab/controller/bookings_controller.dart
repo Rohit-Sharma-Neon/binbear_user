@@ -10,7 +10,8 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
   late TabController tabController;
   RxBool isLoading = false.obs;
   List<MyBookingsData>? list = <MyBookingsData>[];
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController upcomingRefreshController = RefreshController(initialRefresh: false);
+  RefreshController pastRefreshController = RefreshController(initialRefresh: false);
 
   @override
   void onInit() {
@@ -24,12 +25,6 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
     });
   }
 
-  @override
-  void onClose() {
-    tabController.dispose();
-    super.onClose();
-  }
-
   getMyBookingsApi() async {
     if (!tabController.indexIsChanging) {
       isLoading.value = true;
@@ -38,7 +33,8 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
       };
       try {
         await BaseApiService().post(apiEndPoint: ApiEndPoints().myBookings, data: data, showLoader: false).then((value){
-          refreshController.refreshCompleted();
+          upcomingRefreshController.refreshCompleted();
+          pastRefreshController.refreshCompleted();
           if (value?.statusCode ==  200) {
             MyBookingsResponse response = MyBookingsResponse.fromJson(value?.data);
             if (response.success??false) {
@@ -53,7 +49,8 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
         });
       } on Exception catch (e) {
         isLoading.value = false;
-        refreshController.refreshCompleted();
+        upcomingRefreshController.refreshCompleted();
+        pastRefreshController.refreshCompleted();
       }
     }
   }
