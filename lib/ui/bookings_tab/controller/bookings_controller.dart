@@ -12,7 +12,7 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
   List<MyBookingsData>? list = <MyBookingsData>[];
   RefreshController upcomingRefreshController = RefreshController(initialRefresh: false);
   RefreshController pastRefreshController = RefreshController(initialRefresh: false);
-
+  
   @override
   void onInit() {
     super.onInit();

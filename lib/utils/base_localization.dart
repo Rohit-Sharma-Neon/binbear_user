@@ -168,6 +168,7 @@ class BaseLocalization extends Translations {
       "Select Address":"Select Address",
       "Select Your Address":"Select Your Address",
       "Apply Now":"Apply Now",
+      "No Saved Address Found, Please Add":"No Saved Address Found, Please Add",
     },
 
     'de_DE': {

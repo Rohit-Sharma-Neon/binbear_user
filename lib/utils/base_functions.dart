@@ -105,4 +105,26 @@ showSnackBar({bool? isSuccess, String? title, String? subtitle, BuildContext? co
   // ScaffoldMessenger.of(context??Get.context!)
   //   ..hideCurrentSnackBar()
   //   ..showSnackBar(snackBar);
+
+}
+
+
+String getAddressTypeNameByID({required String addressTypeID}){
+  switch (addressTypeID) {
+    case "1": return "Home";
+    case "2": return "Work";
+    case "3": return "Friends & Family";
+    case "4": return "Other";
+    default: return "Home";
+  }
+}
+
+String getAddressTypeNumber({required String getAddressTypeName}){
+  switch (getAddressTypeName) {
+    case "Home": return "1";
+    case "Work": return "2";
+    case "Friends & Family": return "3";
+    case "Other": return "4";
+    default: return "1";
+  }
 }

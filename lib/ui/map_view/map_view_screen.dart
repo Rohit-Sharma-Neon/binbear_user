@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:binbear/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbear/ui/manage_address/manage_address_screen.dart';
+import 'package:binbear/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbear/utils/base_functions.dart';
 import 'package:binbear/utils/base_variables.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +27,8 @@ class MapViewScreen extends StatefulWidget {
   final String? mainAddress;
   final String? subAddress;
   final String? fullAddress;
-  const MapViewScreen({super.key, this.lat, this.long, this.mainAddress, this.subAddress, this.fullAddress});
+  final bool? showSavedAddress;
+  const MapViewScreen({super.key, this.lat, this.long, this.mainAddress, this.subAddress, this.fullAddress, this.showSavedAddress});
 
   @override
   State<MapViewScreen> createState() => _MapViewScreenState();
@@ -33,12 +37,16 @@ class MapViewScreen extends StatefulWidget {
 class _MapViewScreenState extends State<MapViewScreen> {
 
   final MapViewController controller = Get.find<MapViewController>();
+  final BaseController baseController = Get.find<BaseController>();
 
   @override
   void initState() {
     super.initState();
     controller.addMarker(latitude: widget.lat??0, longitude: widget.long??0);
     controller.searchController.clear();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.selectedLocation.value = widget.fullAddress??"";
+    });
   }
 
 @override
@@ -85,7 +93,9 @@ class _MapViewScreenState extends State<MapViewScreen> {
                   markers: Set<Marker>.of(controller.markers),
                   zoomControlsEnabled: false,
                   onMapCreated: (GoogleMapController googleMapController) {
-                    controller.mapController.complete(googleMapController);
+                    if(!controller.mapController.isCompleted){
+                      controller.mapController.complete(googleMapController);
+                    }
                   },
                 );
               },
@@ -125,11 +135,14 @@ class _MapViewScreenState extends State<MapViewScreen> {
                           children: [
                             GestureDetector(
                               behavior: HitTestBehavior.opaque,
-                              onTap: (){
+                              onTap: () async {
                                 triggerHapticFeedback();
                                 FocusManager.instance.primaryFocus?.unfocus();
-                                controller.selectedLocation.value = controller.searchResultList[index];
+                                controller.selectedLocation.value = controller.searchResultList[index]["description"];
                                 controller.searchController.text = controller.searchResultList[index]["description"];
+                                await baseController.getLatLngFromAddress(address: controller.searchResultList[index]["description"]).then((value) {
+                                  controller.animateToLocation(value: value??const LatLng(0, 0));
+                                });
                                 controller.searchResultList.value = [];
                                 controller.searchResultList.clear();
                                 controller.searchResultList.refresh();
@@ -205,13 +218,14 @@ class _MapViewScreenState extends State<MapViewScreen> {
                   Row(
                     children: [
                       Expanded(
-                        child: BaseText(
-                          value: widget.mainAddress??"",
-                          fontSize: 15,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        child: Obx(()=>BaseText(
+                            value: controller.selectedLocation.value.split(",").first,
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                       BaseButton(
@@ -226,11 +240,12 @@ class _MapViewScreenState extends State<MapViewScreen> {
                       ),
                     ],
                   ),
-                  BaseText(
-                    value: widget.subAddress??"",
-                    fontSize: 11.5,
-                    color: const Color(0xffFBE6D3),
-                    fontWeight: FontWeight.w400,
+                  Obx(()=>BaseText(
+                      value: controller.selectedLocation.value.replaceAll("${controller.selectedLocation.value.split(",").first}, ", ""),
+                      fontSize: 11.5,
+                      color: const Color(0xffFBE6D3),
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                   BaseButton(
                     title: "Confirm Location",
@@ -240,9 +255,8 @@ class _MapViewScreenState extends State<MapViewScreen> {
                       Get.to(()=> ManageAddressScreen(
                         lat: widget.lat??0,
                         long: widget.long??0,
-                        mainAddress: widget.mainAddress??"",
-                        subAddress: widget.subAddress??"",
-                        fullAddress: widget.fullAddress??"",
+                        fullAddress: controller.selectedLocation.value,
+                        showSavedAddress: widget.showSavedAddress??false,
                       ));
                     },
                   )
@@ -253,5 +267,10 @@ class _MapViewScreenState extends State<MapViewScreen> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    controller.mapController = Completer();
+    super.dispose();
   }
 }

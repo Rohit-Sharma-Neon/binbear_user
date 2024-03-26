@@ -1,6 +1,10 @@
 import 'dart:developer';
 
+import 'package:binbear/backend/api_end_points.dart';
+import 'package:binbear/backend/base_api_service.dart';
 import 'package:binbear/backend/base_responses/autocomplete_api_response.dart';
+import 'package:binbear/backend/base_responses/base_success_response.dart';
+import 'package:binbear/ui/manual_address/model/saved_address_response.dart';
 import 'package:binbear/utils/base_debouncer.dart';
 import 'package:binbear/utils/base_functions.dart';
 import 'package:binbear/utils/base_strings.dart';
@@ -9,9 +13,11 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
 import 'package:dio/dio.dart' as as_dio;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -26,6 +32,9 @@ class BaseController extends GetxController{
   RxList<AutoCompleteResult> searchResultList = <AutoCompleteResult>[].obs;
   TextEditingController searchController = TextEditingController();
   RxBool isAddressSuggestionLoading = false.obs;
+  RxBool isSavedAddressLoading = false.obs;
+  RxList<SavedAddressListData>? savedAddressList = <SavedAddressListData>[].obs;
+  RefreshController savedAddressRefreshController = RefreshController(initialRefresh: false);
 
   @override
   void onInit() {
@@ -74,8 +83,8 @@ class BaseController extends GetxController{
   //   }
   // }
 
-  Future<LatLng?> getLatLngFromPlaceId({required String address}) async {
-    List<Location> locations = await locationFromAddress(address);
+  Future<LatLng?> getLatLngFromAddress({required String address}) async {
+    var locations = await locationFromAddress(address);
     if (locations.isNotEmpty) {
       return LatLng(locations.first.latitude, locations.first.longitude);
     }else {
@@ -131,6 +140,62 @@ class BaseController extends GetxController{
       returnValue = false;
       await Geolocator.openAppSettings();
       log('Location permissions are permanently denied, we cannot request permissions.');
+    }
+    return returnValue;
+  }
+
+
+  getSavedAddress() async {
+    isSavedAddressLoading.value = true;
+    savedAddressList?.clear();
+    savedAddressList?.refresh();
+    update();
+    try {
+      await BaseApiService().get(apiEndPoint: ApiEndPoints().addressList, showLoader: false).then((value){
+        savedAddressRefreshController.refreshCompleted();
+        if (value?.statusCode ==  200) {
+          SavedAddressListResponse response = SavedAddressListResponse.fromJson(value?.data);
+          if (response.success??false) {
+            savedAddressList?.value = response.data??[];
+          }else{
+            showSnackBar(subtitle: response.message??"");
+          }
+        }else{
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+        isSavedAddressLoading.value = false;
+        update();
+      });
+    } on Exception catch (e) {
+      isSavedAddressLoading.value = false;
+      savedAddressRefreshController.refreshCompleted();
+      update();
+    }
+  }
+
+  Future<bool> setDefaultAddress({required String addressID}) async {
+    Map<String, String> data = {
+      "address_id":addressID.toString(),
+      "is_default":"1",
+    };
+    bool returnValue = false;
+    try {
+      await BaseApiService().post(apiEndPoint: ApiEndPoints().setDefaultAddress, data: data).then((value){
+        if (value?.statusCode ==  200) {
+          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+          if (response.success??false) {
+            returnValue = true;
+          }else{
+            showSnackBar(subtitle: response.message??"");
+          }
+        }else{
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+        return returnValue;
+      });
+
+    } on Exception catch (e) {
+      print(e.toString());
     }
     return returnValue;
   }

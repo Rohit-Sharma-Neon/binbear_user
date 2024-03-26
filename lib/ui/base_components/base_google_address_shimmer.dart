@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class BaseGoogleAddressShimmer extends StatelessWidget {
   final int? itemCount;
+  final bool? showAddressType;
   final double? topMargin, rightMargin, leftMargin, bottomMargin;
-  const BaseGoogleAddressShimmer({super.key, this.itemCount, this.topMargin, this.rightMargin, this.leftMargin, this.bottomMargin});
+  const BaseGoogleAddressShimmer({super.key, this.itemCount, this.topMargin, this.rightMargin, this.leftMargin, this.bottomMargin, this.showAddressType});
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +52,7 @@ class BaseGoogleAddressShimmer extends StatelessWidget {
             ),
           ],
         ),
-      );
-        },
+      );},
     );
   }
 }

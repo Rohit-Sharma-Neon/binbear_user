@@ -21,6 +21,8 @@ import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_colors.dart';
 import 'package:binbear/utils/base_functions.dart';
 import 'package:binbear/utils/base_variables.dart';
+import 'package:binbear/utils/get_storage.dart';
+import 'package:binbear/utils/storage_keys.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,10 +48,12 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BaseAppBar(
-        title: "Hello Rohit",
+      appBar: BaseAppBar(
+        title: "Hello ${BaseStorage.read(StorageKeys.userName).toString().split(" ").first}",
+        titleSize: 13,
         showNotification: true,
         showDrawerIcon: true,
+        showDefaultAddress: true,
       ),
       body: SmartRefresher(
         controller: controller.refreshController,

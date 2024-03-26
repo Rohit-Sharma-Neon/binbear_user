@@ -12,7 +12,7 @@ class HomeController extends GetxController{
   RxList<HomeServices?>? services = <HomeServices?>[].obs;
   RxList<HomeBookings?>? bookings = <HomeBookings?>[].obs;
   RefreshController refreshController = RefreshController(initialRefresh: false);
-
+  Rx<Useraddress>? userAddress = Useraddress().obs;
   @override
   void onInit() {
     getHomeData();
@@ -32,6 +32,8 @@ class HomeController extends GetxController{
             banners = response.data?.banners??[];
             services?.value = response.data?.services??[];
             bookings?.value = response.data?.bookings??[];
+            userAddress?.value = response.data?.userdetail?.first.useraddress??"";
+            update();
           }else{
             showSnackBar(subtitle: response.message??"");
           }

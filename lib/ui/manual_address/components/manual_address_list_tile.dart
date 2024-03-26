@@ -48,7 +48,7 @@ class ManualAddressListTile extends StatelessWidget {
               ],
             ),
           ),
-          (suffixBtnTitle??"").isNotEmpty ? const BaseOutlinedButton(title: "Hello",) : const SizedBox.shrink(),
+          (suffixBtnTitle??"").isNotEmpty ? BaseOutlinedButton(title: suffixBtnTitle,) : const SizedBox.shrink(),
         ],
       ),
     );

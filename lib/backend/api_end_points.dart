@@ -26,4 +26,6 @@ class ApiEndPoints {
   final String giveBookingRating = "addrating";
   final String addAddress = "addaddress";
   final String couponList = "couponlist";
+  final String addressList = "addresslist";
+  final String setDefaultAddress = "defaultaddressset";
 }

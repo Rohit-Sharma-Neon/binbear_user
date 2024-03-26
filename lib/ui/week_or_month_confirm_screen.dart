@@ -8,6 +8,8 @@ import 'package:binbear/ui/base_components/base_scaffold_background.dart';
 import 'package:binbear/ui/base_components/base_text.dart';
 import 'package:binbear/ui/base_payment_screen.dart';
 import 'package:binbear/ui/coupons_list/coupon_list_screen.dart';
+import 'package:binbear/ui/manual_address/manual_address_screen.dart';
+import 'package:binbear/ui/manual_address/model/saved_address_response.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_colors.dart';
 import 'package:binbear/utils/base_functions.dart';
@@ -29,6 +31,7 @@ class WeekOrMonthConfirmScreen extends StatefulWidget {
 class _WeekOrMonthConfirmScreenState extends State<WeekOrMonthConfirmScreen> {
 
   String selectedDropDownValue = "2 Cans";
+  String selectedAddress = "Select Your Address";
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
@@ -155,17 +158,8 @@ class _WeekOrMonthConfirmScreenState extends State<WeekOrMonthConfirmScreen> {
                       color: Colors.black,
                       fontWeight: FontWeight.w400,
                     ),
-                    // Obx(()=> const BaseText(
-                    //     value: "\$400.00",
-                    //     fontSize: 16,
-                    //     lineThrough: true,
-                    //     bottomMargin: 0,
-                    //     color: Colors.black,
-                    //     fontWeight: FontWeight.w700,
-                    //   ),
-                    // ),
                     BaseText(
-                      value: "\$400.00",
+                      value: "\$400",
                       fontSize: 32,
                       bottomMargin: 0,
                       color: Colors.black,
@@ -242,18 +236,28 @@ class _WeekOrMonthConfirmScreenState extends State<WeekOrMonthConfirmScreen> {
                     ),
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: (){},
-                      child: const Row(
+                      onTap: (){
+                        triggerHapticFeedback();
+                        Get.to(() => const ManualAddressScreen(showSavedAddress: true))?.then((value) {
+                          SavedAddressListData savedAddress = value;
+                          if (savedAddress.fullAddress != null && (savedAddress.fullAddress?.toString()??"").isNotEmpty) {
+                            setState(() {
+                              selectedAddress = savedAddress.fullAddress??"";
+                            });
+                          }
+                        });
+                      },
+                      child: Row(
                         children: [
                           Expanded(
                             child: BaseText(
-                              value: "Select Your Address",
+                              value: selectedAddress,
                               fontSize: 16,
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Icon(Icons.arrow_forward_ios_rounded, size: 11,)
+                          const Icon(Icons.arrow_forward_ios_rounded, size: 11,)
                         ],
                       ),
                     ),

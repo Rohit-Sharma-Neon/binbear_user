@@ -14,10 +14,9 @@ import 'package:get/get.dart';
 
 class ManageAddressScreen extends StatefulWidget {
   final double? lat, long;
-  final String? mainAddress;
-  final String? subAddress;
   final String? fullAddress;
-  const ManageAddressScreen({super.key, this.lat, this.long, this.mainAddress, this.subAddress, this.fullAddress});
+  final bool? showSavedAddress;
+  const ManageAddressScreen({super.key, this.lat, this.long, this.fullAddress, this.showSavedAddress});
   @override
   State<ManageAddressScreen> createState() => _ManageAddressScreenState();
 }
@@ -40,8 +39,8 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                 bottomPadding: 13,
                 bottomMargin: 14,
                 child: ManualAddressListTile(
-                  title: widget.mainAddress??"",
-                  subtitle: widget.subAddress??"",
+                  title: widget.fullAddress?.split(",").first??"",
+                  subtitle: widget.fullAddress?.replaceAll("${widget.fullAddress?.split(",").first}, ", "")??"",
                 ),
               ),
               BaseContainer(
@@ -108,7 +107,12 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                         }*/else if (controller.landmarkController.text.trim().isEmpty) {
                           showSnackBar(subtitle: "Please Enter Description");
                         }else{
-                          controller.saveAddress(lat: widget.lat??0, lng: widget.long??0, fullAddress: widget.fullAddress??"");
+                          controller.saveAddress(
+                            lat: widget.lat??0,
+                            lng: widget.long??0,
+                            fullAddress: widget.fullAddress??"",
+                            showSavedAddress: widget.showSavedAddress??false,
+                          );
                         }
                       },
                     )

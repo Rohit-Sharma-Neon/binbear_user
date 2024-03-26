@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 import '../../onboardings/splash/controller/base_controller.dart';
 
 class MapViewController extends GetxController{
-  final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
+  Completer<GoogleMapController> mapController = Completer();
   final BaseController baseController = Get.find<BaseController>();
   List<Marker> markers = <Marker>[];
   RxString selectedLocation = "".obs;
@@ -72,6 +72,21 @@ class MapViewController extends GetxController{
         addMarker(latitude: value?.latitude??0, longitude: value?.longitude??0);
       }
     });
+    update();
+  }
+
+  animateToLocation({required LatLng value}) async {
+    final GoogleMapController controller = await mapController.future;
+      if (value.latitude != 0 && value.longitude != 0) {
+        controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+            bearing: 0,
+            target: LatLng(value.latitude??0, value.longitude??0),
+            zoom: 17,
+          ),
+        ));
+        addMarker(latitude: value.latitude??0, longitude: value.longitude??0);
+      }
     update();
   }
 }

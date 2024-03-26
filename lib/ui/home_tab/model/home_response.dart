@@ -166,7 +166,9 @@ class Userdetail {
     deviceToken = json['device_token'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    useraddress = json['useraddress'];
+    useraddress = json['useraddress'] != null
+        ? Useraddress.fromJson(json['useraddress'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -199,7 +201,78 @@ class Userdetail {
     data['device_token'] = deviceToken;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
-    data['useraddress'] = useraddress;
+    if (useraddress != null) {
+      data['useraddress'] = useraddress!.toJson();
+    }
+    return data;
+  }
+}
+
+class Useraddress {
+  dynamic id;
+  dynamic userId;
+  dynamic flatNo;
+  dynamic apartment;
+  dynamic description;
+  dynamic lat;
+  dynamic lng;
+  dynamic homeType;
+  dynamic fullAddress;
+  dynamic isDeleted;
+  dynamic isDefault;
+  dynamic status;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  Useraddress(
+      {this.id,
+        this.userId,
+        this.flatNo,
+        this.apartment,
+        this.description,
+        this.lat,
+        this.lng,
+        this.homeType,
+        this.fullAddress,
+        this.isDeleted,
+        this.isDefault,
+        this.status,
+        this.createdAt,
+        this.updatedAt});
+
+  Useraddress.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    flatNo = json['flat_no'];
+    apartment = json['apartment'];
+    description = json['description'];
+    lat = json['lat'];
+    lng = json['lng'];
+    homeType = json['home_type'];
+    fullAddress = json['full_address'];
+    isDeleted = json['is_deleted'];
+    isDefault = json['is_default'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['flat_no'] = flatNo;
+    data['apartment'] = apartment;
+    data['description'] = description;
+    data['lat'] = lat;
+    data['lng'] = lng;
+    data['home_type'] = homeType;
+    data['full_address'] = fullAddress;
+    data['is_deleted'] = isDeleted;
+    data['is_default'] = isDefault;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
