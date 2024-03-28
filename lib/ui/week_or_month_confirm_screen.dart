@@ -10,6 +10,7 @@ import 'package:binbear/ui/base_payment_screen.dart';
 import 'package:binbear/ui/coupons_list/coupon_list_screen.dart';
 import 'package:binbear/ui/manual_address/manual_address_screen.dart';
 import 'package:binbear/ui/manual_address/model/saved_address_response.dart';
+import 'package:binbear/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbear/utils/base_assets.dart';
 import 'package:binbear/utils/base_colors.dart';
 import 'package:binbear/utils/base_functions.dart';
@@ -19,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+
+import 'payment_gateway/payment_gateway_screen.dart';
 
 class WeekOrMonthConfirmScreen extends StatefulWidget {
   final String selectedServiceTitle;
@@ -261,7 +264,11 @@ class _WeekOrMonthConfirmScreenState extends State<WeekOrMonthConfirmScreen> {
                         ],
                       ),
                     ),
-                    const Divider(color: Colors.grey, height: 15, thickness: 0.6,)
+                    const Divider(
+                      color: Colors.grey,
+                      height: 15,
+                      thickness: 0.6,
+                    ),
                   ],
                 ),
               ),
@@ -275,7 +282,16 @@ class _WeekOrMonthConfirmScreenState extends State<WeekOrMonthConfirmScreen> {
           child: BaseButton(
             title: 'Confirm & Pay',
             onPressed: (){
-              Get.off(() => const BasePaymentScreen(payableAmount: '400.00',));
+              Get.find<BaseController>().createBooking(
+                serviceTypeId: "1",
+                subServiceId: widget.selectedServiceTitle == "Weekly Service" ? "1" : "2",
+                noOfCans: "",
+                price: "",
+                addressId: "",
+                couponId: "",
+              );
+              // Get.to(() => const PaymentGatewayScreen());
+              // Get.off(() => const BasePaymentScreen(payableAmount: '400.00',));
             },
           ),
         ),

@@ -40,13 +40,13 @@ dependencies:
   carousel_slider: ^4.2.1
   uuid: ^4.3.3
   geocoding: ^3.0.0
+  flutter_webview_plugin: ^0.4.0
 # Animations Packages
   animate_do: ^3.3.4
   flutter_staggered_animations: ^1.1.1
   slide_countdown: ^1.5.2
   lottie: ^3.1.0
   card_loading: ^0.3.2
-#  page_transition: ^2.1.0
 
 dev_dependencies:
   flutter_test:

@@ -28,4 +28,5 @@ class ApiEndPoints {
   final String couponList = "couponlist";
   final String addressList = "addresslist";
   final String setDefaultAddress = "defaultaddressset";
+  final String bookingCreate = "bookingcreate";
 }

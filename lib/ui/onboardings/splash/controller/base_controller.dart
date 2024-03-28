@@ -199,4 +199,36 @@ class BaseController extends GetxController{
     }
     return returnValue;
   }
+
+  Future<bool> createBooking({required String serviceTypeId, String? subServiceId, String? noOfCans, String? price, String? addressId, String? couponId}) async {
+    Map<String, String> data = {
+      "category_id":serviceTypeId,
+      "sub_category_id":subServiceId??"",
+      "no_of_cane":noOfCans??"",
+      "price":price??"",
+      "address_id":addressId??"",
+      "coupon_id":couponId??"",
+    };
+    bool returnValue = false;
+    try {
+      await BaseApiService().post(apiEndPoint: ApiEndPoints().bookingCreate, data: data).then((value){
+        if (value?.statusCode ==  200) {
+          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+          if (response.success??false) {
+            returnValue = true;
+          }else{
+            showSnackBar(subtitle: response.message??"");
+          }
+        }else{
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+        return returnValue;
+      });
+
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+    return returnValue;
+  }
+
 }
